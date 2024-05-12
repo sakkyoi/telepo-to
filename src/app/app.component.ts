@@ -3,13 +3,17 @@ import { RouterOutlet } from '@angular/router';
 import { Peer } from 'peerjs';
 import { FormsModule } from "@angular/forms";
 import { ElementRef, ViewChild } from '@angular/core';
+import { QRCodeModule } from 'angularx-qrcode';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import { iconoirQrCode } from '@ng-icons/iconoir';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule],
+  imports: [RouterOutlet, FormsModule, QRCodeModule, NgIconComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
+  providers: [provideIcons({ iconoirQrCode })]
 })
 export class AppComponent {
   title = 'telepo-to';
@@ -39,4 +43,6 @@ export class AppComponent {
   ngAfterViewInit() {
     // this.welcomeModal?.nativeElement.showModal();
   }
+
+  protected readonly Infinity = Infinity;
 }
