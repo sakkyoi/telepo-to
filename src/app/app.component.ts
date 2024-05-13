@@ -58,4 +58,6 @@ export class AppComponent {
       this.publicKey = keypair.publicKey;
     });
   }
+
+  protected readonly window = window;
 }

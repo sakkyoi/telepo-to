@@ -62,7 +62,7 @@
     <div class="p-4 w-96 min-h-full bg-base-200">
       <h1 class="text-xl font-bold mb-5">To share files between devices</h1>
       <p class="text-lg">Scan the QR code:</p>
-      <qrcode [qrdata]="'https://youtu.be/dQw4w9WgXcQ'"
+      <qrcode [qrdata]="window.location.origin + '/' + peer.id"
               cssClass="flex justify-center p-5 bg-gray-50 rounded-lg"
               [width]="512"
               [errorCorrectionLevel]="'M'"
@@ -72,7 +72,7 @@
       <div class="divider">OR</div>
       <p class="text-lg">Share the provided address below:</p>
       <label class="input input-bordered flex items-center gap-2 pr-0">
-        <input type="text" class="grow" value="https://youtu.be/dQw4w9WgXcQ" readonly />
+        <input type="text" class="grow" [value]="window.location.origin + '/' + peer.id" readonly />
         <div class="tooltip tooltip-bottom" data-tip="copy">
           <button class="btn btn-ghost btn-circle">
             <ng-icon [name]="'iconoirCopy'"></ng-icon>
