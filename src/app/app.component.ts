@@ -9,11 +9,12 @@ import { iconoirQrCode, iconoirCopy } from '@ng-icons/iconoir';
 import { NgIf } from '@angular/common';
 import { pki } from 'node-forge';
 import { LoadingComponent } from "./loading/loading.component";
+import { ThemeSwitcherComponent } from "./theme-switcher/theme-switcher.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, QRCodeModule, NgIconComponent, NgIf, LoadingComponent],
+  imports: [RouterOutlet, FormsModule, QRCodeModule, NgIconComponent, NgIf, LoadingComponent, ThemeSwitcherComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   providers: [provideIcons({ iconoirQrCode, iconoirCopy })],
