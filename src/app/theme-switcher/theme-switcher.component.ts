@@ -14,11 +14,22 @@ export class ThemeSwitcherComponent {
   @Input() theme: boolean = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
 
   constructor() {
-    if (localStorage.getItem('theme') === undefined) localStorage.setItem('theme', this.theme.toString());
+    if (localStorage.getItem('theme') == undefined) localStorage.setItem('theme', this.theme.toString());
     this.theme = localStorage.getItem('theme') === 'true';
+
+    this.updateTheme();
   }
 
   themeChange() {
     localStorage.setItem('theme', this.theme.toString());
+    this.updateTheme();
+  }
+
+  updateTheme() {
+    if (this.theme) {
+      document.body.classList.remove('dark');
+    } else {
+      document.body.classList.add('dark');
+    }
   }
 }
