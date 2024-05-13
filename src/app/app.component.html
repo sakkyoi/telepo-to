@@ -19,7 +19,7 @@
       </div>
 
       <div class="flex-none">
-        <app-theme-switcher />
+        <app-theme-switcher></app-theme-switcher>
       </div>
     </div>
   </div>
@@ -29,7 +29,7 @@
 </div>
 
 <!-- loading screen -->
-<app-loading [message]="'establishing'" *ngIf="!peer.id || !privateKey" />
+<app-loading [message]="'establishing'" *ngIf="!peer.id || !privateKey"></app-loading>
 
 <!-- Welcome modal -->
 <dialog class="modal" #welcomeModal>
@@ -59,7 +59,7 @@
               [errorCorrectionLevel]="'M'"
               [elementType]="'img'"
               [colorLight]="'#ffffff00'"
-              [margin]="0" />
+              [margin]="0"></qrcode>
       <div class="divider">OR</div>
       <p class="text-lg">Share the provided address below:</p>
       <label class="input input-bordered flex items-center gap-2 pr-0">
