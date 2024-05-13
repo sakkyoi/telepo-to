@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Peer } from 'peerjs';
 import { FormsModule } from "@angular/forms";
@@ -8,23 +8,24 @@ import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { iconoirQrCode, iconoirCopy } from '@ng-icons/iconoir';
 import { NgIf } from '@angular/common';
 import { pki } from 'node-forge';
+import { LoadingComponent } from "./loading/loading.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, QRCodeModule, NgIconComponent, NgIf],
+  imports: [RouterOutlet, FormsModule, QRCodeModule, NgIconComponent, NgIf, LoadingComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  providers: [provideIcons({ iconoirQrCode, iconoirCopy })]
+  providers: [provideIcons({ iconoirQrCode, iconoirCopy })],
 })
 export class AppComponent {
   title = 'telepo-to';
+  theme: boolean = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
   peer: Peer;
   privateKey: pki.rsa.PrivateKey | undefined;
   publicKey: pki.rsa.PublicKey | undefined;
   pki = pki;
 
-  @Input() theme: boolean = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
   @ViewChild('welcomeModal') welcomeModal: ElementRef | undefined;
 
   constructor() {
