@@ -57,12 +57,12 @@
   </div>
 </dialog>
 
-<!-- QR code drawer -->
+<!-- Info drawer -->
 <div class="drawer drawer-end">
-  <input id="info-drawer" type="checkbox" class="drawer-toggle" />
+  <input id="info-drawer" type="checkbox" class="drawer-toggle" checked />
   <div class="drawer-side">
     <label for="info-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
-    <div class="p-4 w-96 min-h-full bg-base-200">
+    <div class="p-4 pr-5 w-96 min-h-full bg-base-200">
       <qrcode [qrdata]="'https://youtu.be/dQw4w9WgXcQ'"
               cssClass="flex justify-center p-5 bg-white rounded-lg"
               [width]="512"
@@ -70,6 +70,13 @@
               [elementType]="'img'"
               [colorLight]="'#ffffff00'"
               [margin]="0" />
+      <div class="divider">OR</div>
+      <label class="input input-bordered flex items-center gap-2 mt-5 pr-0">
+        <input type="text" class="grow" value="https://youtu.be/dQw4w9WgXcQ" readonly />
+        <button class="btn btn-ghost btn-circle">
+          <ng-icon [name]="'iconoirCopy'"></ng-icon>
+        </button>
+      </label>
     </div>
   </div>
 </div>

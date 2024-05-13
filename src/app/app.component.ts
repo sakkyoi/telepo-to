@@ -5,7 +5,7 @@ import { FormsModule } from "@angular/forms";
 import { ElementRef, ViewChild } from '@angular/core';
 import { QRCodeModule } from 'angularx-qrcode';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { iconoirQrCode } from '@ng-icons/iconoir';
+import { iconoirQrCode, iconoirCopy } from '@ng-icons/iconoir';
 import { NgIf } from '@angular/common';
 import { pki } from 'node-forge';
 
@@ -15,7 +15,7 @@ import { pki } from 'node-forge';
   imports: [RouterOutlet, FormsModule, QRCodeModule, NgIconComponent, NgIf],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  providers: [provideIcons({ iconoirQrCode })]
+  providers: [provideIcons({ iconoirQrCode, iconoirCopy })]
 })
 export class AppComponent {
   title = 'telepo-to';
