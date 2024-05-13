@@ -22,7 +22,7 @@ export class AppComponent {
   peer: Peer;
   privateKey: pki.rsa.PrivateKey | undefined;
   publicKey: pki.rsa.PublicKey | undefined;
-  qrCodeColor: string = '';
+  pki = pki;
 
   @Input() theme: boolean = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
   @ViewChild('welcomeModal') welcomeModal: ElementRef | undefined;
@@ -40,7 +40,7 @@ export class AppComponent {
       });
     });
 
-    // this.generateKeyPair();
+    this.generateKeyPair();
   }
 
   ngAfterViewInit() {
@@ -55,6 +55,6 @@ export class AppComponent {
       }
       this.privateKey = keypair.privateKey;
       this.publicKey = keypair.publicKey;
-    })
+    });
   }
 }
