@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Peer } from 'peerjs';
 import { FormsModule } from "@angular/forms";
