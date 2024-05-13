@@ -21,11 +21,12 @@ import { ThemeSwitcherComponent } from "./theme-switcher/theme-switcher.componen
 })
 export class AppComponent {
   title = 'telepo-to';
-  theme: boolean = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
   peer: Peer;
   privateKey: pki.rsa.PrivateKey | undefined;
   publicKey: pki.rsa.PublicKey | undefined;
   pki = pki;
+  peerEstablished: boolean = false;
+  keyPairGenerated: boolean = false;
 
   @ViewChild('welcomeModal') welcomeModal: ElementRef | undefined;
 
@@ -33,6 +34,7 @@ export class AppComponent {
     this.peer = new Peer();
 
     this.peer.on('open', (id) => {
+      this.peerEstablished = true;
       console.log('My peer ID is: ' + id);
     });
 
@@ -57,7 +59,13 @@ export class AppComponent {
       }
       this.privateKey = keypair.privateKey;
       this.publicKey = keypair.publicKey;
+
+      this.keyPairGenerated = true;
     });
+  }
+
+  checkEstablished() {
+    return this.peerEstablished && this.keyPairGenerated;
   }
 
   protected readonly window = window;

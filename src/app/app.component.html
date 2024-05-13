@@ -29,7 +29,7 @@
 </div>
 
 <!-- loading screen -->
-<app-loading [message]="'establishing'" *ngIf="!peer.id || !privateKey"></app-loading>
+<app-loading [message]="'establishing'" *ngIf="!checkEstablished()"></app-loading>
 
 <!-- Welcome modal -->
 <dialog class="modal" #welcomeModal>
