@@ -8,8 +8,10 @@
       </div>
 
       <div class="flex-none space-x-1">
-        <span class="pl-1">peerid: {{ peer.id }}</span>
-        <label class="flex items-center justify-center" for="info-drawer"><ng-icon [name]="'iconoirQrCode'"></ng-icon></label>
+        <label class="flex items-center justify-center cursor-pointer" for="info-drawer">
+          <span class="pl-1">peerid: {{ peer.id }}</span>
+          <ng-icon [name]="'iconoirQrCode'"></ng-icon>
+        </label>
       </div>
 
       <div class="flex-none">
