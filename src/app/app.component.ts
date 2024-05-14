@@ -22,9 +22,9 @@ import { ThemeSwitcherComponent } from "./theme-switcher/theme-switcher.componen
 export class AppComponent {
   title = 'telepo-to';
   peer: Peer;
+  pki = pki;
   privateKey: pki.rsa.PrivateKey | undefined;
   publicKey: pki.rsa.PublicKey | undefined;
-  pki = pki;
   peerEstablished: boolean = false;
   keyPairGenerated: boolean = false;
 
@@ -33,12 +33,12 @@ export class AppComponent {
   constructor() {
     this.peer = new Peer();
 
-    this.peer.on('open', (id) => {
+    this.peer.on('open', (_) => {
       this.peerEstablished = true;
-      console.log('My peer ID is: ' + id);
     });
 
     this.peer.on('connection', (conn) => {
+      console.log('connection established');
       conn.on('data', (data: any) => {
         console.log(data);
       });
