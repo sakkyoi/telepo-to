@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Peer } from 'peerjs';
 import { FormsModule } from "@angular/forms";
-import { ElementRef, ViewChild } from '@angular/core';
 import { QRCodeModule } from 'angularx-qrcode';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { iconoirQrCode, iconoirCopy } from '@ng-icons/iconoir';
@@ -10,11 +9,12 @@ import { NgIf } from '@angular/common';
 import { pki } from 'node-forge';
 import { LoadingComponent } from "./loading/loading.component";
 import { ThemeSwitcherComponent } from "./theme-switcher/theme-switcher.component";
+import { ModalComponent } from "./modal/modal.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, QRCodeModule, NgIconComponent, NgIf, LoadingComponent, ThemeSwitcherComponent],
+  imports: [RouterOutlet, FormsModule, QRCodeModule, NgIconComponent, NgIf, LoadingComponent, ThemeSwitcherComponent, ModalComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   providers: [provideIcons({ iconoirQrCode, iconoirCopy })],
@@ -27,8 +27,6 @@ export class AppComponent {
   publicKey: pki.rsa.PublicKey | undefined;
   peerEstablished: boolean = false;
   keyPairGenerated: boolean = false;
-
-  @ViewChild('welcomeModal') welcomeModal: ElementRef | undefined;
 
   constructor() {
     this.peer = new Peer();
