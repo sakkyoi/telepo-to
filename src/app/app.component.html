@@ -1,5 +1,4 @@
 <router-outlet />
-
 <div class="flex flex-col h-screen">
   <div class="flex-none">
     <div class="navbar bg-base-100">
@@ -9,14 +8,14 @@
 
       <div class="flex-none space-x-1">
         <label class="flex items-center justify-center cursor-pointer" for="info-drawer">
-          <span class="pl-1">peerid: {{ peer.id }}</span>
+          <span class="pl-1">peerid: {{ global.peer.id }}</span>
           <ng-icon [name]="'iconoirQrCode'"></ng-icon>
         </label>
       </div>
 
       <div class="flex-none">
         <!-- Welcome modal -->
-        <app-modal [buttonText]="'help'" [title]="'Welcome!'" [hidden]="!checkEstablished()" #welcomeModal>
+        <app-modal [buttonText]="'help'" [title]="'Welcome!'" [hidden]="!global.establishedStatus" #welcomeModal>
           <modal-body><p class="py-4">Press ESC key or click the button below to close</p></modal-body>
           <modal-close><button class="btn">Close</button></modal-close>
         </app-modal>
@@ -33,7 +32,7 @@
 </div>
 
 <!-- loading screen -->
-<app-loading [message]="'establishing...'" [hidden]="checkEstablished()"></app-loading>
+<app-loading [message]="'establishing...'" [hidden]="global.establishedStatus"></app-loading>
 
 <!-- Info drawer -->
 <div class="drawer drawer-end">
@@ -43,7 +42,7 @@
     <div class="p-4 w-96 min-h-full bg-base-200">
       <h1 class="text-xl font-bold mb-5">To share files between devices</h1>
       <p class="text-lg">Scan the QR code:</p>
-      <qrcode [qrdata]="window.location.origin + '/' + peer.id"
+      <qrcode [qrdata]="window.location.origin + '/' + global.peer.id"
               cssClass="flex justify-center p-5 bg-gray-50 rounded-lg"
               [width]="512"
               [errorCorrectionLevel]="'M'"
@@ -53,16 +52,16 @@
       <div class="divider">OR</div>
       <p class="text-lg">Share the provided address below:</p>
       <label class="input input-bordered flex items-center gap-2 pr-0">
-        <input type="text" class="grow" [value]="window.location.origin + '/' + peer.id" readonly />
+        <input type="text" class="grow" [value]="window.location.origin + '/' + global.peer.id" readonly />
         <div class="tooltip tooltip-bottom" data-tip="copy">
           <button class="btn btn-ghost btn-circle">
             <ng-icon [name]="'iconoirCopy'"></ng-icon>
           </button>
         </div>
       </label>
-      <p class="text-sm text-base-content/70 pt-5">Other people will see you as: <br><span class="text-base-content/90">{{ peer.id }}</span></p>
+      <p class="text-sm text-base-content/70 pt-5">Other people will see you as: <br><span class="text-base-content/90">{{ global.peer.id }}</span></p>
       <p class="text-base mt-5">This is your public key:</p>
-      <textarea class="textarea textarea-bordered w-full h-48 mt-1 [scrollbar-width:none] resize-none" readonly>{{ publicKey ? pki.publicKeyToPem(publicKey) : '' }}</textarea>
+      <textarea class="textarea textarea-bordered w-full h-48 mt-1 [scrollbar-width:none] resize-none" readonly>{{ global.getPublicKeyAsPem() }}</textarea>
       <p class="text-sm text-base-content/70">normally, you would not need to mind about this.</p>
     </div>
   </div>

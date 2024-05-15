@@ -1,20 +1,24 @@
-import {Component, CUSTOM_ELEMENTS_SCHEMA, ViewChild} from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { Peer } from 'peerjs';
-import { FormsModule } from "@angular/forms";
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ViewChild } from '@angular/core';
+import { RouterOutlet } from "@angular/router";
 import { QRCodeModule } from 'angularx-qrcode';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { iconoirQrCode, iconoirCopy } from '@ng-icons/iconoir';
-import { NgIf } from '@angular/common';
-import { pki } from 'node-forge';
 import { LoadingComponent } from "./loading/loading.component";
 import { ThemeSwitcherComponent } from "./theme-switcher/theme-switcher.component";
 import { ModalComponent } from "./modal/modal.component";
+import { GlobalService } from "../global.service";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, QRCodeModule, NgIconComponent, NgIf, LoadingComponent, ThemeSwitcherComponent, ModalComponent],
+  imports: [
+    RouterOutlet,
+    LoadingComponent,
+    ThemeSwitcherComponent,
+    ModalComponent,
+    QRCodeModule,
+    NgIconComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   providers: [provideIcons({ iconoirQrCode, iconoirCopy })],
@@ -24,51 +28,15 @@ import { ModalComponent } from "./modal/modal.component";
 })
 export class AppComponent {
   title = 'telepo-to';
-  peer: Peer;
-  pki = pki;
-  privateKey: pki.rsa.PrivateKey | undefined;
-  publicKey: pki.rsa.PublicKey | undefined;
-  peerEstablished: boolean = false;
-  keyPairGenerated: boolean = false;
 
   @ViewChild('welcomeModal') welcomeModal: ModalComponent | undefined;
 
-  constructor() {
-    this.peer = new Peer();
-
-    this.peer.on('open', (_) => {
-      this.peerEstablished = true;
-    });
-
-    this.peer.on('connection', (conn) => {
-      console.log('connection established');
-      conn.on('data', (data: any) => {
-        console.log(data);
-      });
-    });
-
-    this.generateKeyPair();
-  }
+  constructor(
+    protected global: GlobalService
+  ) {}
 
   ngAfterViewInit() {
     this.welcomeModal?.showModal();
-  }
-
-  generateKeyPair() {
-    pki.rsa.generateKeyPair({ bits: 4096, workers: 2 }, (err, keypair) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      this.privateKey = keypair.privateKey;
-      this.publicKey = keypair.publicKey;
-
-      this.keyPairGenerated = true;
-    });
-  }
-
-  checkEstablished() {
-    return this.peerEstablished && this.keyPairGenerated;
   }
 
   protected readonly window = window;
