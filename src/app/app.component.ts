@@ -1,4 +1,4 @@
-import {Component, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {Component, CUSTOM_ELEMENTS_SCHEMA, ViewChild} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Peer } from 'peerjs';
 import { FormsModule } from "@angular/forms";
@@ -20,7 +20,7 @@ import { ModalComponent } from "./modal/modal.component";
   providers: [provideIcons({ iconoirQrCode, iconoirCopy })],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
-  ]
+  ],
 })
 export class AppComponent {
   title = 'telepo-to';
@@ -30,6 +30,8 @@ export class AppComponent {
   publicKey: pki.rsa.PublicKey | undefined;
   peerEstablished: boolean = false;
   keyPairGenerated: boolean = false;
+
+  @ViewChild('welcomeModal') welcomeModal: ModalComponent | undefined;
 
   constructor() {
     this.peer = new Peer();
@@ -49,7 +51,7 @@ export class AppComponent {
   }
 
   ngAfterViewInit() {
-    // this.welcomeModal?.nativeElement.showModal();
+    this.welcomeModal?.showModal();
   }
 
   generateKeyPair() {
