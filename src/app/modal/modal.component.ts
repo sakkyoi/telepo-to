@@ -1,13 +1,10 @@
 import { Component, ElementRef, ViewChild, Input } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import {NgIf} from "@angular/common";
+import { NgIf } from "@angular/common";
 
 @Component({
   selector: 'app-modal',
   standalone: true,
   imports: [
-    FormsModule,
-    ReactiveFormsModule,
     NgIf
   ],
   templateUrl: './modal.component.html',
