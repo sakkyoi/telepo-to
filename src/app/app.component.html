@@ -7,7 +7,7 @@
 
       <div class="flex-none space-x-1">
         <label class="flex items-center justify-center cursor-pointer" for="info-drawer">
-          <span class="pl-1">peerid: {{ global.peer.id }}</span>
+          <span class="pl-1 mr-1">peerid: {{ global.peer.id }}</span>
           <ng-icon [name]="'iconoirQrCode'"></ng-icon>
         </label>
       </div>
@@ -52,9 +52,10 @@
       <div class="divider">OR</div>
       <p class="text-lg">Share the provided address below:</p>
       <label class="input input-bordered flex items-center gap-2 pr-0">
-        <input type="text" class="grow" [value]="window.location.origin + '/' + global.peer.id" readonly />
-        <div class="tooltip tooltip-bottom" data-tip="copy">
-          <button class="btn btn-ghost btn-circle">
+        <input type="text" class="grow" [value]="window.location.origin + '/' + global.peer.id" readonly #url />
+        <!-- TODO: copy button animation -->
+        <div class="tooltip tooltip-bottom" data-tip="copy" (click)="tooltip.setAttribute('data-tip', 'copy!')" (mouseleave)="tooltip.setAttribute('data-tip', 'copy')" #tooltip>
+          <button class="btn btn-ghost btn-circle" (click)="navigator.clipboard.writeText(url.value)">
             <ng-icon [name]="'iconoirCopy'"></ng-icon>
           </button>
         </div>

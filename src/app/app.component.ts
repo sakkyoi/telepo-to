@@ -40,4 +40,5 @@ export class AppComponent {
   }
 
   protected readonly window = window;
+  protected readonly navigator = navigator;
 }
