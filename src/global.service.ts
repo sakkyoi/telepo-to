@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Peer } from 'peerjs';
+import { Peer, DataConnection } from 'peerjs';
 import { pki } from 'node-forge';
 
 @Injectable({
@@ -12,6 +12,8 @@ export class GlobalService {
   });
   keypair: pki.KeyPair | undefined;
 
+  connections: { [key: string]: DataConnection } = {};
+
   peerEstablished: boolean = false;
   keyPairGenerated: boolean = false;
   establishedStatus: boolean = false;
@@ -23,6 +25,18 @@ export class GlobalService {
     this.peer.on('open', (_) => {
       this.peerEstablished = true;
       this.updateEstablishedStatus();
+    });
+
+    // TODO: Implement the connection logic
+    // Listen for the peer to be connected
+    this.peer.on('connection', (connection) => {
+      console.log('Connected to', connection.peer);
+      this.connections[connection.peer] = connection;
+      this.connections[connection.peer].on('data', (data) => {
+        console.log('Received', data);
+        console.log(this.connections)
+        connection.send('Hello, I received your message!');
+      });
     });
   }
 
@@ -50,7 +64,7 @@ export class GlobalService {
   setWelcomeModalShown() {
     localStorage.setItem('welcomeModalShown', 'true');
   }
-  
+
   getWelcomeModalShown() {
     return localStorage.getItem('welcomeModalShown') === 'true';
   }
