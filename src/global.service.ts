@@ -46,4 +46,12 @@ export class GlobalService {
   updateEstablishedStatus() {
     this.establishedStatus = this.peerEstablished && this.keyPairGenerated;
   }
+
+  setWelcomeModalShown() {
+    localStorage.setItem('welcomeModalShown', 'true');
+  }
+  
+  getWelcomeModalShown() {
+    return localStorage.getItem('welcomeModalShown') === 'true';
+  }
 }

@@ -36,7 +36,7 @@ export class AppComponent {
   ) {}
 
   ngAfterViewInit() {
-    this.welcomeModal?.showModal();
+    if (!this.global.getWelcomeModalShown()) this.welcomeModal?.showModal(); // Show the welcome modal if it hasn't been shown yet
   }
 
   protected readonly window = window;
