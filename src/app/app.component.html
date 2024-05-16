@@ -21,7 +21,12 @@
 
       <div class="flex-none">
         <!-- Welcome modal -->
-        <app-modal [buttonText]="'help'" [title]="'Welcome!'" [hidden]="!global.establishedStatus" #welcomeModal>
+        <app-modal [title]="'Welcome!'" [hidden]="!global.establishedStatus" #welcomeModal>
+          <modal-open>
+            <ul class="menu menu-horizontal px-1">
+              <li><a>help</a></li>
+            </ul>
+          </modal-open>
           <modal-body><p class="py-4">Press ESC key or click the button below to close</p></modal-body>
           <modal-close><button class="btn">Close</button></modal-close>
         </app-modal>

@@ -1,6 +1,4 @@
-<ul class="menu menu-horizontal px-1" (click)="dialog.showModal()" *ngIf="buttonText">
-  <li><a>{{ buttonText }}</a></li>
-</ul>
+<div (click)="dialog.showModal()"><ng-content select="modal-open"></ng-content></div>
 <dialog class="modal" #dialog>
   <div class="modal-box">
     <h3 class="font-bold text-lg">{{ title }}</h3>

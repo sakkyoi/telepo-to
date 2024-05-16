@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { GlobalService } from "../../global.service";
 
 @Component({
@@ -14,8 +14,10 @@ export class ConnectorComponent {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     protected global: GlobalService
   ) {
+    this.global.connectionEstablished = false;
     this.route.params.subscribe(params => {
       this.destinationId = params['id'];
     });
@@ -23,6 +25,7 @@ export class ConnectorComponent {
     // wait for the peer to be established
     this.global.peer.on('open', (_) => {
       global.establishConnection(this.destinationId);
+      this.router.navigate(['']).then(r => console.log(r));
     });
   }
 }

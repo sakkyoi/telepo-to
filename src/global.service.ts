@@ -25,6 +25,7 @@ export class GlobalService {
   connections: { [key: string]: Connection } = {};
 
   peerEstablished: boolean = false;
+  connectionEstablished: boolean = true; // this will manually be set to true if is in the connector route
   keyPairInitialized: boolean = false;
   establishedStatus: boolean = false;
 
@@ -78,6 +79,14 @@ export class GlobalService {
       // Listen for disconnections
       this.connections[destinationId].peer.on('close', this.disconnectListener(destinationId));
     });
+
+    // TODO: Add a timeout for the connection to be established, and if it isn't, handle it
+    setTimeout(() => {
+      console.log(this.connections[destinationId]);
+      if (this.connections[destinationId].status === 'connecting') {
+        console.error('Connection timed out');
+      }
+    }, 30000);
   }
 
   dataListener(id: string) {
@@ -95,6 +104,9 @@ export class GlobalService {
         case 'acknowledge': {
           this.connections[id].publicKey = data.publicKey;
           this.connections[id].status = 'connected';
+
+          this.connectionEstablished = true; // the connection is now established
+          this.updateEstablishedStatus();
           break;
         }
         default: {
@@ -187,7 +199,7 @@ export class GlobalService {
   }
 
   updateEstablishedStatus() {
-    this.establishedStatus = this.peerEstablished && this.keyPairInitialized;
+    this.establishedStatus = this.peerEstablished && this.keyPairInitialized && this.connectionEstablished;
   }
 
   setWelcomeModalShown() {

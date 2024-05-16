@@ -7,7 +7,7 @@ import { LoadingComponent } from "./loading/loading.component";
 import { ThemeSwitcherComponent } from "./theme-switcher/theme-switcher.component";
 import { ModalComponent } from "./modal/modal.component";
 import { GlobalService } from "../global.service";
-import {KeyValuePipe} from "@angular/common";
+import { KeyValuePipe } from "@angular/common";
 
 @Component({
   selector: 'app-root',

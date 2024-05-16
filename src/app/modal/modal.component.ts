@@ -13,7 +13,6 @@ import { GlobalService } from "../../global.service";
 })
 export class ModalComponent {
   @ViewChild('dialog') dialog: ElementRef | undefined;
-  @Input() buttonText: string | undefined;
   @Input() title: string | undefined;
 
   constructor(
