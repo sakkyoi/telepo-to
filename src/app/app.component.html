@@ -30,8 +30,54 @@
       </div>
     </div>
   </div>
-  <div class="flex-1 flex flex-col place-items-center justify-center">
+  <div class="flex-1 flex flex-col">
     <!-- content goes here -->
+
+    <div class="overflow-x-auto h-full">
+      <table class="table">
+        <!-- head -->
+        <thead>
+        <tr>
+          <th>
+            <label>
+              <input type="checkbox" class="checkbox" />
+            </label>
+          </th>
+          <th>peer</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- row 1 -->
+        <tr *ngFor="let connection of global.connections | keyvalue">
+          <th>
+            <label>
+              <input type="checkbox" class="checkbox" />
+            </label>
+          </th>
+          <td>
+            <div class="flex items-center gap-3">
+              <div class="avatar">
+                <div class="mask mask-squircle w-12 h-12">
+                  <img [src]="global.getPeerAvatar(connection.key)" [alt]="global.getPeerName(connection.key)">
+                </div>
+              </div>
+              <div>
+                <div class="font-bold">{{ global.getPeerName(connection.key) }}</div>
+                <div class="text-sm opacity-50">{{ connection.key }}</div>
+              </div>
+            </div>
+          </td>
+          <th>
+            <button class="btn btn-ghost btn-xs">details</button>
+          </th>
+        </tr>
+        </tbody>
+
+      </table>
+    </div>
+
+
     <router-outlet />
   </div>
 </div>

@@ -84,18 +84,20 @@ export class GlobalService {
     });
   }
 
-  getPeerName() {
+  getPeerName(fingerprint: string | undefined = undefined) {
+    if (!fingerprint) fingerprint = this.getFingerprint();
     return uniqueNamesGenerator({
-      dictionaries: [adjectives, colors, animals],
+      dictionaries: [colors, adjectives, animals],
       separator: ' ',
-      seed: this.getFingerprint().getByte(),
+      seed: fingerprint,
     });
   }
 
-  getPeerAvatar(config = {}) {
+  getPeerAvatar(fingerprint: string | undefined = undefined, config = {}) {
+    if (!fingerprint) fingerprint = this.getFingerprint();
     return createAvatar(thumbs, Object.assign(
       {
-        seed: this.getFingerprint().toHex(),
+        seed: fingerprint,
       },
       config,
     )).toDataUriSync();
@@ -106,8 +108,9 @@ export class GlobalService {
     return pki.publicKeyToPem(this.keypair.publicKey);
   }
 
-  getFingerprint() {
-    return pki.getPublicKeyFingerprint(this.keypair?.publicKey!);
+  getFingerprint(publicKey: pki.PublicKey | undefined = undefined) {
+    if (!publicKey) publicKey = this.keypair?.publicKey!;
+    return pki.getPublicKeyFingerprint(publicKey, { encoding: 'hex' });
   }
 
   updateEstablishedStatus() {
