@@ -77,7 +77,6 @@ export class GlobalService {
   }
 
   dataListener(id: string) {
-    console.log('check how many times this is called');
     return (data: any) => {
       switch (data.type) {
         case 'establish': {
@@ -168,6 +167,10 @@ export class GlobalService {
 
   getFingerprint(publicKey: pki.PublicKey | string | undefined = undefined) {
     if (!publicKey) publicKey = this.keypair?.publicKey!;
+
+    // If still undefined, return
+    if (!publicKey) return;
+
     if (typeof publicKey === 'string') publicKey = pki.publicKeyFromPem(publicKey);
     return pki.getPublicKeyFingerprint(publicKey, { encoding: 'hex' });
   }
