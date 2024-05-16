@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Peer, DataConnection } from 'peerjs';
 import { pki } from 'node-forge';
+import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
+import { createAvatar } from '@dicebear/core';
+import { thumbs } from '@dicebear/collection';
 
 @Injectable({
   providedIn: 'root',
@@ -15,11 +18,11 @@ export class GlobalService {
   connections: { [key: string]: DataConnection } = {};
 
   peerEstablished: boolean = false;
-  keyPairGenerated: boolean = false;
+  keyPairInitialized: boolean = false;
   establishedStatus: boolean = false;
 
   constructor() {
-    this.generateKeyPair(); // Generate a keypair when the service is created
+    this.initKeyPair(); // Generate a keypair when the service is created
 
     // Listen for the peer to be established
     this.peer.on('open', (_) => {
@@ -40,6 +43,31 @@ export class GlobalService {
     });
   }
 
+  initKeyPair() {
+    if (this.loadKeyPair()) {
+      console.log('Keypair already generated');
+      // If the keypair has already been generated, load it from local storage
+      this.keypair = this.loadKeyPair();
+
+      this.keyPairInitialized = true;
+      this.updateEstablishedStatus();
+    } else {
+      // Otherwise, generate a new keypair
+      this.generateKeyPair();
+    }
+  }
+
+  loadKeyPair() {
+    const privateKeyPem = localStorage.getItem('privateKey');
+    const publicKeyPem = localStorage.getItem('publicKey');
+    if (!privateKeyPem || !publicKeyPem) return;
+
+    return <pki.KeyPair> {
+      privateKey: pki.privateKeyFromPem(privateKeyPem),
+      publicKey: pki.publicKeyFromPem(publicKeyPem),
+    };
+  }
+
   generateKeyPair() {
     pki.rsa.generateKeyPair({ bits: 4096, workers: 2 }, (err, keypair) => {
       if (err) {
@@ -47,9 +75,30 @@ export class GlobalService {
         return;
       }
       this.keypair = keypair;
-      this.keyPairGenerated = true;
+
+      localStorage.setItem('privateKey', pki.privateKeyToPem(keypair.privateKey));
+      localStorage.setItem('publicKey', pki.publicKeyToPem(keypair.publicKey));
+
+      this.keyPairInitialized = true;
       this.updateEstablishedStatus();
     });
+  }
+
+  getPeerName() {
+    return uniqueNamesGenerator({
+      dictionaries: [adjectives, colors, animals],
+      separator: ' ',
+      seed: this.getFingerprint().getByte(),
+    });
+  }
+
+  getPeerAvatar(config = {}) {
+    return createAvatar(thumbs, Object.assign(
+      {
+        seed: this.getFingerprint().toHex(),
+      },
+      config,
+    )).toDataUriSync();
   }
 
   getPublicKeyAsPem() {
@@ -57,8 +106,12 @@ export class GlobalService {
     return pki.publicKeyToPem(this.keypair.publicKey);
   }
 
+  getFingerprint() {
+    return pki.getPublicKeyFingerprint(this.keypair?.publicKey!);
+  }
+
   updateEstablishedStatus() {
-    this.establishedStatus = this.peerEstablished && this.keyPairGenerated;
+    this.establishedStatus = this.peerEstablished && this.keyPairInitialized;
   }
 
   setWelcomeModalShown() {

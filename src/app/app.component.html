@@ -6,8 +6,13 @@
       </div>
 
       <div class="flex-none space-x-1">
-        <label class="flex items-center justify-center cursor-pointer" for="info-drawer">
-          <span class="pl-1 mr-1">peerid: {{ global.peer.id }}</span>
+        <label class="flex items-center justify-center cursor-pointer space-x-1" for="info-drawer">
+          <div class="avatar">
+            <div class="w-5 mask mask-squircle">
+              <img [src]="global.getPeerAvatar()" alt="">
+            </div>
+          </div>
+          <span>{{ global.getPeerName() }}</span>
           <ng-icon [name]="'iconoirQrCode'"></ng-icon>
         </label>
       </div>
@@ -54,13 +59,25 @@
       <label class="input input-bordered flex items-center gap-2 pr-0">
         <input type="text" class="grow" [value]="window.location.origin + '/' + global.peer.id" readonly #url />
         <!-- TODO: copy button animation -->
-        <div class="tooltip tooltip-bottom" data-tip="copy" (click)="tooltip.setAttribute('data-tip', 'copy!')" (mouseleave)="tooltip.setAttribute('data-tip', 'copy')" #tooltip>
+        <div class="tooltip tooltip-bottom" data-tip="copy" (click)="tooltip.setAttribute('data-tip', 'copied!')" (mouseleave)="tooltip.setAttribute('data-tip', 'copy')" #tooltip>
           <button class="btn btn-ghost btn-circle" (click)="navigator.clipboard.writeText(url.value)">
             <ng-icon [name]="'iconoirCopy'"></ng-icon>
           </button>
         </div>
       </label>
-      <p class="text-sm text-base-content/70 pt-5">Other people will see you as: <br><span class="text-base-content/90">{{ global.peer.id }}</span></p>
+      <div class="flex pt-5">
+        <div class="flex-1">
+          <p class="text-sm text-base-content/70">Other people will see you as: <br><span class="text-base-content/90">{{ global.getPeerName() }}</span></p>
+          <p class="text-sm text-base-content/70">with the peer id: <br><span class="text-base-content/90">{{ global.peer.id }}</span></p>
+        </div>
+        <div class="flex-none">
+          <div class="avatar">
+            <div class="w-16 mask mask-squircle">
+              <img [src]="global.getPeerAvatar()" [alt]="global.getPeerName()">
+            </div>
+          </div>
+        </div>
+      </div>
       <p class="text-base mt-5">This is your public key:</p>
       <textarea class="textarea textarea-bordered w-full h-48 mt-1 [scrollbar-width:none] resize-none" readonly>{{ global.getPublicKeyAsPem() }}</textarea>
       <p class="text-sm text-base-content/70">normally, you would not need to mind about this.</p>
