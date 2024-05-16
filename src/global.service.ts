@@ -50,6 +50,9 @@ export class GlobalService {
 
       // wait for the destination peer to send their public key
       this.connections[connection.peer].peer.on('data', this.dataListener(connection.peer));
+
+      // Listen for disconnections
+      this.connections[connection.peer].peer.on('close', this.disconnectListener(connection.peer));
     });
   }
 
@@ -72,7 +75,8 @@ export class GlobalService {
       // wait for the destination peer to send their public key back
       this.connections[destinationId].peer.on('data', this.dataListener(destinationId));
 
-      // TODO: Listen for disconnections
+      // Listen for disconnections
+      this.connections[destinationId].peer.on('close', this.disconnectListener(destinationId));
     });
   }
 
@@ -97,6 +101,13 @@ export class GlobalService {
           console.error('Unknown data type', data.type);
         }
       }
+    }
+  }
+
+  disconnectListener(id: string) {
+    return () => {
+      // set the connection status to disconnected
+      this.connections[id].status = 'disconnected';
     }
   }
 
