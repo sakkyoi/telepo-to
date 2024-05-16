@@ -20,19 +20,9 @@ export class ConnectorComponent {
       this.destinationId = params['id'];
     });
 
-    // TODO: Implement the connection logic
     // wait for the peer to be established
     this.global.peer.on('open', (_) => {
-      this.global.connections[this.destinationId] = this.global.peer.connect(this.destinationId);
-      this.global.connections[this.destinationId].on('open', () => {
-        // send a message to the destination peer
-        this.global.connections[this.destinationId].send('Hello');
-      });
-
-      // listen for data from the destination peer
-      this.global.connections[this.destinationId].on('data', (data) => {
-        console.log('Received', data);
-      });
+      global.establishConnection(this.destinationId);
     });
   }
 }

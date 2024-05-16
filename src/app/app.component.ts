@@ -7,7 +7,7 @@ import { LoadingComponent } from "./loading/loading.component";
 import { ThemeSwitcherComponent } from "./theme-switcher/theme-switcher.component";
 import { ModalComponent } from "./modal/modal.component";
 import { GlobalService } from "../global.service";
-import {KeyValuePipe, NgForOf} from "@angular/common";
+import {KeyValuePipe} from "@angular/common";
 
 @Component({
   selector: 'app-root',
@@ -20,7 +20,6 @@ import {KeyValuePipe, NgForOf} from "@angular/common";
     QRCodeModule,
     NgIconComponent,
     KeyValuePipe,
-    NgForOf,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
@@ -40,6 +39,10 @@ export class AppComponent {
 
   ngAfterViewInit() {
     if (!this.global.getWelcomeModalShown()) this.welcomeModal?.showModal(); // Show the welcome modal if it hasn't been shown yet
+  }
+
+  test() {
+    console.log(this.global.connections);
   }
 
   protected readonly window = window;

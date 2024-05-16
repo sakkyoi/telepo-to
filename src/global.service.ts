@@ -5,6 +5,13 @@ import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-
 import { createAvatar } from '@dicebear/core';
 import { thumbs } from '@dicebear/collection';
 
+export type ConnectionStatus = 'connecting' | 'connected' | 'disconnected';
+export type Connection = {
+  status: ConnectionStatus,
+  peer: DataConnection,
+  publicKey: pki.PublicKey | undefined,
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -15,7 +22,7 @@ export class GlobalService {
   });
   keypair: pki.KeyPair | undefined;
 
-  connections: { [key: string]: DataConnection } = {};
+  connections: { [key: string]: Connection } = {};
 
   peerEstablished: boolean = false;
   keyPairInitialized: boolean = false;
@@ -30,17 +37,68 @@ export class GlobalService {
       this.updateEstablishedStatus();
     });
 
-    // TODO: Implement the connection logic
     // Listen for the peer to be connected
     this.peer.on('connection', (connection) => {
-      console.log('Connected to', connection.peer);
-      this.connections[connection.peer] = connection;
-      this.connections[connection.peer].on('data', (data) => {
-        console.log('Received', data);
-        console.log(this.connections)
-        connection.send('Hello, I received your message!');
-      });
+      // Initiate a store for the connection if it doesn't exist
+      if (!this.connections[connection.peer]) {
+        this.connections[connection.peer] = {
+          status: 'connecting',
+          peer: connection,
+          publicKey: undefined,
+        };
+      }
+
+      // wait for the destination peer to send their public key
+      this.connections[connection.peer].peer.on('data', this.dataListener(connection.peer));
     });
+  }
+
+  establishConnection(destinationId: string) {
+    // Initiate a store for the connection
+    this.connections[destinationId] = {
+      status: 'connecting',
+      peer: this.peer.connect(destinationId),
+      publicKey: undefined,
+    };
+
+    // wait for the peer to be established
+    this.connections[destinationId].peer.on('open', () => {
+      // Send the public key to the destination peer
+      this.connections[destinationId].peer.send({
+        type: 'establish',
+        publicKey: this.getPublicKeyAsPem(),
+      });
+
+      // wait for the destination peer to send their public key back
+      this.connections[destinationId].peer.on('data', this.dataListener(destinationId));
+
+      // TODO: Listen for disconnections
+    });
+  }
+
+  dataListener(id: string) {
+    console.log('check how many times this is called');
+    return (data: any) => {
+      switch (data.type) {
+        case 'establish': {
+          this.connections[id].publicKey = data.publicKey;
+          this.connections[id].status = 'connected';
+          this.connections[id].peer.send({
+            type: 'acknowledge',
+            publicKey: this.getPublicKeyAsPem(),
+          });
+          break;
+        }
+        case 'acknowledge': {
+          this.connections[id].publicKey = data.publicKey;
+          this.connections[id].status = 'connected';
+          break;
+        }
+        default: {
+          console.error('Unknown data type', data.type);
+        }
+      }
+    }
   }
 
   initKeyPair() {
@@ -108,8 +166,9 @@ export class GlobalService {
     return pki.publicKeyToPem(this.keypair.publicKey);
   }
 
-  getFingerprint(publicKey: pki.PublicKey | undefined = undefined) {
+  getFingerprint(publicKey: pki.PublicKey | string | undefined = undefined) {
     if (!publicKey) publicKey = this.keypair?.publicKey!;
+    if (typeof publicKey === 'string') publicKey = pki.publicKeyFromPem(publicKey);
     return pki.getPublicKeyFingerprint(publicKey, { encoding: 'hex' });
   }
 

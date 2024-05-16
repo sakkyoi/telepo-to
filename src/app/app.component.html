@@ -31,6 +31,7 @@
     </div>
   </div>
   <div class="flex-1 flex flex-col">
+    <button (click)="test()">test</button>
     <!-- content goes here -->
 
     <div class="overflow-x-auto h-full">
@@ -49,29 +50,33 @@
         </thead>
         <tbody>
         <!-- row 1 -->
-        <tr *ngFor="let connection of global.connections | keyvalue">
-          <th>
-            <label>
-              <input type="checkbox" class="checkbox" />
-            </label>
-          </th>
-          <td>
-            <div class="flex items-center gap-3">
-              <div class="avatar">
-                <div class="mask mask-squircle w-12 h-12">
-                  <img [src]="global.getPeerAvatar(connection.key)" [alt]="global.getPeerName(connection.key)">
+        @for (connection of global.connections | keyvalue; track connection.key) {
+          @if (connection.value.status === 'connected') {
+            <tr>
+              <th>
+                <label>
+                  <input type="checkbox" class="checkbox" />
+                </label>
+              </th>
+              <td>
+                <div class="flex items-center gap-3">
+                  <div class="avatar">
+                    <div class="mask mask-squircle w-12 h-12">
+                      <img [src]="global.getPeerAvatar(global.getFingerprint(connection.value.publicKey))" [alt]="global.getPeerName(global.getFingerprint(connection.value.publicKey))">
+                    </div>
+                  </div>
+                  <div>
+                    <div class="font-bold">{{ global.getPeerName(global.getFingerprint(connection.value.publicKey)) }}</div>
+                    <div class="text-sm opacity-50">{{ connection.key }}</div>
+                  </div>
                 </div>
-              </div>
-              <div>
-                <div class="font-bold">{{ global.getPeerName(connection.key) }}</div>
-                <div class="text-sm opacity-50">{{ connection.key }}</div>
-              </div>
-            </div>
-          </td>
-          <th>
-            <button class="btn btn-ghost btn-xs">details</button>
-          </th>
-        </tr>
+              </td>
+              <th>
+                <button class="btn btn-ghost btn-xs">details</button>
+              </th>
+            </tr>
+          }
+        }
         </tbody>
 
       </table>
