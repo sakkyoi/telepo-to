@@ -119,7 +119,7 @@ export class GlobalService {
             peers: this.getPeerList().filter((peer) => peer !== id),
           });
           // keep the chain of connections
-          this.keepChain(id);
+          this.keepPeerChain(id);
           return;
         }
         // receiver answer to connector
@@ -145,11 +145,11 @@ export class GlobalService {
       // set the connection status to disconnected
       this.connections[id].status = 'disconnected';
       // if the connection disconnected was the one in the connector route, push the user to another route
-      this.keepChain(id);
+      this.keepPeerChain(id);
     }
   }
 
-  keepChain(id: string) {
+  keepPeerChain(id: string) {
     if (!this.initializedConnector || this.initializedConnector === id) {
       // find a peer that is still connected
       const connectedPeer = Object.keys(this.connections).find((peer) => this.connections[peer].status === 'connected');
