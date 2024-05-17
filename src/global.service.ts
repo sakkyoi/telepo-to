@@ -89,25 +89,43 @@ export class GlobalService {
     }, 30000);
   }
 
+  getPeerList() {
+    return Object.keys(this.connections).map((id) => id);
+  }
+
+  connectToPeers(peers: string[]) {
+    for (const peer of peers) {
+      if (!this.connections[peer]) {
+        console.log('Establishing connection with', peer);
+        this.establishConnection(peer);
+      }
+    }
+  }
+
   dataListener(id: string) {
     return (data: any) => {
       switch (data.type) {
+        // connector to receiver
         case 'establish': {
           this.connections[id].publicKey = data.publicKey;
           this.connections[id].status = 'connected';
           this.connections[id].peer.send({
             type: 'acknowledge',
             publicKey: this.getPublicKeyAsPem(),
+            peers: this.getPeerList().filter((peer) => peer !== id),
           });
-          break;
+          return;
         }
+        // receiver answer to connector
         case 'acknowledge': {
           this.connections[id].publicKey = data.publicKey;
           this.connections[id].status = 'connected';
 
+          this.connectToPeers(data.peers);
+
           this.connectionEstablished = true; // the connection is now established
           this.updateEstablishedStatus();
-          break;
+          return;
         }
         default: {
           console.error('Unknown data type', data.type);
