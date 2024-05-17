@@ -154,12 +154,12 @@ export class GlobalService {
       // find a peer that is still connected
       const connectedPeer = Object.keys(this.connections).find((peer) => this.connections[peer].status === 'connected');
 
+      this.initializedConnector = connectedPeer;
+
       // if there is a connected peer, push the user to that peer's route
       if (connectedPeer) {
-        this.initializedConnector = connectedPeer;
         this.ngZone.run(() => this.router.navigate(['/', connectedPeer])).then(_ => {} );
       } else {
-        this.initializedConnector = undefined;
         this.ngZone.run(() => this.router.navigate(['/'])).then(_ => {} );
       }
     }
