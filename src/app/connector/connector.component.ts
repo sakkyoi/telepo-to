@@ -23,6 +23,7 @@ export class ConnectorComponent {
 
     // wait for the peer to be established
     this.global.peer.on('open', (_) => {
+      this.global.initializedConnector = this.destinationId;
       global.establishConnection(this.destinationId);
     });
   }

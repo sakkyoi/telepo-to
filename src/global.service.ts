@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
+import { Router } from "@angular/router";
 import { Peer, DataConnection } from 'peerjs';
 import { pki } from 'node-forge';
 import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
@@ -28,8 +29,12 @@ export class GlobalService {
   connectionEstablished: boolean = true; // this will manually be set to true if is in the connector route
   keyPairInitialized: boolean = false;
   establishedStatus: boolean = false;
+  initializedConnector: string | undefined;
 
-  constructor() {
+  constructor(
+    private router: Router,
+    private ngZone: NgZone,
+  ) {
     this.initKeyPair(); // Generate a keypair when the service is created
 
     // Listen for the peer to be established
@@ -90,13 +95,12 @@ export class GlobalService {
   }
 
   getPeerList() {
-    return Object.keys(this.connections).map((id) => id);
+    return Object.keys(this.connections).map((id) => id).filter((id) => this.connections[id].status === 'connected');
   }
 
   connectToPeers(peers: string[]) {
     for (const peer of peers) {
       if (!this.connections[peer]) {
-        console.log('Establishing connection with', peer);
         this.establishConnection(peer);
       }
     }
@@ -114,6 +118,8 @@ export class GlobalService {
             publicKey: this.getPublicKeyAsPem(),
             peers: this.getPeerList().filter((peer) => peer !== id),
           });
+          // keep the chain of connections
+          this.keepChain(id);
           return;
         }
         // receiver answer to connector
@@ -138,12 +144,29 @@ export class GlobalService {
     return () => {
       // set the connection status to disconnected
       this.connections[id].status = 'disconnected';
+      // if the connection disconnected was the one in the connector route, push the user to another route
+      this.keepChain(id);
+    }
+  }
+
+  keepChain(id: string) {
+    if (!this.initializedConnector || this.initializedConnector === id) {
+      // find a peer that is still connected
+      const connectedPeer = Object.keys(this.connections).find((peer) => this.connections[peer].status === 'connected');
+
+      // if there is a connected peer, push the user to that peer's route
+      if (connectedPeer) {
+        this.initializedConnector = connectedPeer;
+        this.ngZone.run(() => this.router.navigate(['/', connectedPeer])).then(_ => {} );
+      } else {
+        this.initializedConnector = undefined;
+        this.ngZone.run(() => this.router.navigate(['/'])).then(_ => {} );
+      }
     }
   }
 
   initKeyPair() {
     if (this.loadKeyPair()) {
-      console.log('Keypair already generated');
       // If the keypair has already been generated, load it from local storage
       this.keypair = this.loadKeyPair();
 
