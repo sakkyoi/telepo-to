@@ -1,17 +1,11 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from "@angular/router";
-import { Peer, DataConnection } from 'peerjs';
+import { Peer } from 'peerjs';
 import { pki } from 'node-forge';
 import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
 import { createAvatar } from '@dicebear/core';
 import { thumbs } from '@dicebear/collection';
-
-export type ConnectionStatus = 'connecting' | 'connected' | 'disconnected';
-export type Connection = {
-  status: ConnectionStatus,
-  peer: DataConnection,
-  publicKey: pki.PublicKey | undefined,
-}
+import {Connection, ConnectionStatus} from "./typings";
 
 @Injectable({
   providedIn: 'root',
@@ -48,7 +42,7 @@ export class GlobalService {
       // Initiate a store for the connection if it doesn't exist
       if (!this.connections[connection.peer]) {
         this.connections[connection.peer] = {
-          status: 'connecting',
+          status: ConnectionStatus.CONNECTING,
           peer: connection,
           publicKey: undefined,
         };
@@ -65,7 +59,7 @@ export class GlobalService {
   establishConnection(destinationId: string) {
     // Initiate a store for the connection
     this.connections[destinationId] = {
-      status: 'connecting',
+      status: ConnectionStatus.CONNECTING,
       peer: this.peer.connect(destinationId),
       publicKey: undefined,
     };
@@ -112,7 +106,7 @@ export class GlobalService {
         // connector to receiver
         case 'establish': {
           this.connections[id].publicKey = data.publicKey;
-          this.connections[id].status = 'connected';
+          this.connections[id].status = ConnectionStatus.CONNECTED;
           this.connections[id].peer.send({
             type: 'acknowledge',
             publicKey: this.getPublicKeyAsPem(),
@@ -125,7 +119,7 @@ export class GlobalService {
         // receiver answer to connector
         case 'acknowledge': {
           this.connections[id].publicKey = data.publicKey;
-          this.connections[id].status = 'connected';
+          this.connections[id].status = ConnectionStatus.CONNECTED;
 
           this.connectToPeers(data.peers);
 
@@ -143,7 +137,7 @@ export class GlobalService {
   disconnectListener(id: string) {
     return () => {
       // set the connection status to disconnected
-      this.connections[id].status = 'disconnected';
+      this.connections[id].status = ConnectionStatus.DISCONNECTED;
       // if the connection disconnected was the one in the connector route, push the user to another route
       this.keepPeerChain(id);
     }
