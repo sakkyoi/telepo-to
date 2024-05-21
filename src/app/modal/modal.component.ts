@@ -12,8 +12,8 @@ import { GlobalService } from "../../global.service";
   styleUrl: './modal.component.css'
 })
 export class ModalComponent {
-  @ViewChild('dialog') dialog: ElementRef | undefined;
-  @Input() title: string | undefined;
+  @ViewChild('dialog') dialog!: ElementRef;
+  @Input() title!: string;
 
   constructor(
     protected global: GlobalService
