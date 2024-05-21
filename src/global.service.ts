@@ -1,11 +1,22 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from "@angular/router";
-import { Peer } from 'peerjs';
+import { DataConnection, Peer } from 'peerjs';
 import { pki } from 'node-forge';
 import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
 import { createAvatar } from '@dicebear/core';
 import { thumbs } from '@dicebear/collection';
-import {Connection, ConnectionStatus} from "./typings";
+
+export enum ConnectionStatus {
+  CONNECTING = 'connecting',
+  CONNECTED = 'connected',
+  DISCONNECTED = 'disconnected',
+}
+
+export type Connection = {
+  status: ConnectionStatus,
+  peer: DataConnection,
+  publicKey: pki.PublicKey | undefined,
+}
 
 @Injectable({
   providedIn: 'root',
