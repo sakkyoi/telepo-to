@@ -1,10 +1,11 @@
-import { Injectable, NgZone } from '@angular/core';
+import {Injectable, NgZone, ViewContainerRef} from '@angular/core';
 import { Router } from "@angular/router";
 import { DataConnection, Peer } from 'peerjs';
 import { pki } from 'node-forge';
 import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
 import { createAvatar } from '@dicebear/core';
 import { thumbs } from '@dicebear/collection';
+import { AlertComponent } from "./app/alert/alert.component";
 
 export enum ConnectionStatus {
   CONNECTING = 'connecting',
@@ -22,6 +23,7 @@ export type Connection = {
   providedIn: 'root',
 })
 export class GlobalService {
+  rootContainer: ViewContainerRef | undefined;
   peer: Peer = new Peer({
     host: 'localhost',
     port: 9000
@@ -95,8 +97,11 @@ export class GlobalService {
       console.log(this.connections[destinationId]);
       if (this.connections[destinationId].status === 'connecting') {
         console.error('Connection timed out');
+        const alert = this.rootContainer?.createComponent(AlertComponent)!;
+        alert.setInput('title', 'Connection timed out');
+        alert.setInput('message', 'The connection to the destination peer timed out');
       }
-    }, 30000);
+    }, 10000);
   }
 
   getPeerList() {

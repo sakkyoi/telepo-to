@@ -8,7 +8,6 @@ import { ThemeSwitcherComponent } from "./theme-switcher/theme-switcher.componen
 import { ModalComponent } from "./modal/modal.component";
 import { GlobalService } from "../global.service";
 import { KeyValuePipe } from "@angular/common";
-import { AlertComponent } from "./alert/alert.component";
 
 @Component({
   selector: 'app-root',
@@ -37,7 +36,9 @@ export class AppComponent {
   constructor(
     protected global: GlobalService,
     private viewContainer: ViewContainerRef,
-  ) {}
+  ) {
+    this.global.rootContainer = viewContainer;
+  }
 
   ngAfterViewInit() {
     if (!this.global.getWelcomeModalShown()) this.welcomeModal.showModal(); // Show the welcome modal if it hasn't been shown yet
@@ -45,10 +46,6 @@ export class AppComponent {
 
   test() {
     console.log(this.global.connections);
-    const alert = this.viewContainer.createComponent(AlertComponent);
-    alert.setInput('title', 'Test');
-    alert.setInput('message', 'This is a test alert');
-    console.log(alert);
   }
 
   protected readonly window = window;
