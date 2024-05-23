@@ -99,7 +99,7 @@ export class GlobalService {
         console.error('Connection timed out');
         const alert = this.rootContainer?.createComponent(AlertComponent)!;
         alert.setInput('title', 'Connection timed out');
-        alert.setInput('message', 'The connection to the destination peer timed out');
+        alert.setInput('message', 'The connection to the destination peer timed out, but the connection may still try to establish.');
       }
     }, 10000);
   }

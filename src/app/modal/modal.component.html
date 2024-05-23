@@ -4,7 +4,7 @@
     <h3 class="font-bold text-lg">{{ title }}</h3>
     <ng-content select="modal-body"></ng-content>
     <div class="modal-action">
-      <form method="dialog" (click)="global.setWelcomeModalShown()">
+      <form method="dialog" (click)="globalService.setWelcomeModalShown()">
         <!-- if there is a button in form, it will close the modal -->
         <ng-content select="modal-close"></ng-content>
       </form>

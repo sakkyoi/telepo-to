@@ -16,7 +16,7 @@ export class ModalComponent {
   @Input() title!: string;
 
   constructor(
-    protected global: GlobalService
+    protected globalService: GlobalService
   ) {}
 
   showModal() {

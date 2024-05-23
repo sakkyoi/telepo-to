@@ -34,18 +34,18 @@ export class AppComponent {
   @ViewChild('welcomeModal') welcomeModal!: ModalComponent;
 
   constructor(
-    protected global: GlobalService,
+    protected globalService: GlobalService,
     private viewContainer: ViewContainerRef,
   ) {
-    this.global.rootContainer = viewContainer;
+    this.globalService.rootContainer = viewContainer;
   }
 
   ngAfterViewInit() {
-    if (!this.global.getWelcomeModalShown()) this.welcomeModal.showModal(); // Show the welcome modal if it hasn't been shown yet
+    if (!this.globalService.getWelcomeModalShown()) this.welcomeModal.showModal(); // Show the welcome modal if it hasn't been shown yet
   }
 
   test() {
-    console.log(this.global.connections);
+    console.log(this.globalService.connections);
   }
 
   protected readonly window = window;

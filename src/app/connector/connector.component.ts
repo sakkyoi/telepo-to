@@ -14,17 +14,17 @@ export class ConnectorComponent {
 
   constructor(
     private route: ActivatedRoute,
-    protected global: GlobalService
+    protected globalService: GlobalService
   ) {
-    this.global.connectionEstablished = false;
+    this.globalService.connectionEstablished = false;
     this.route.params.subscribe(params => {
       this.destinationId = params['id'];
     });
 
     // wait for the peer to be established
-    this.global.peer.on('open', (_) => {
-      this.global.initializedConnector = this.destinationId;
-      global.establishConnection(this.destinationId);
+    this.globalService.peer.on('open', (_) => {
+      this.globalService.initializedConnector = this.destinationId;
+      globalService.establishConnection(this.destinationId);
     });
   }
 }

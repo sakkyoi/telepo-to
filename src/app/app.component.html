@@ -5,15 +5,15 @@
         <a class="btn btn-ghost text-xl">telepo.to</a>
       </div>
 
-      @if (global.establishedStatus) {
+      @if (globalService.establishedStatus) {
         <div class="flex-none space-x-1">
           <label class="flex items-center justify-center cursor-pointer space-x-1" for="info-drawer">
             <div class="avatar">
               <div class="w-5 mask mask-squircle">
-                <img [src]="global.getPeerAvatar()" alt="">
+                <img [src]="globalService.getPeerAvatar()" alt="">
               </div>
             </div>
-            <span>{{ global.getPeerName() }}</span>
+            <span>{{ globalService.getPeerName() }}</span>
             <ng-icon [name]="'iconoirQrCode'"></ng-icon>
           </label>
         </div>
@@ -21,7 +21,7 @@
 
       <div class="flex-none">
         <!-- Welcome modal -->
-        <app-modal [title]="'Welcome!'" [hidden]="!global.establishedStatus" #welcomeModal>
+        <app-modal [title]="'Welcome!'" [hidden]="!globalService.establishedStatus" #welcomeModal>
           <modal-open>
             <ul class="menu menu-horizontal px-1">
               <li><a>help</a></li>
@@ -57,7 +57,7 @@
         </thead>
         <tbody>
         <!-- row 1 -->
-        @for (connection of global.connections | keyvalue; track connection.key) {
+        @for (connection of globalService.connections | keyvalue; track connection.key) {
           @if (connection.value.status === 'connected') {
             <tr>
               <th>
@@ -69,11 +69,11 @@
                 <div class="flex items-center gap-3">
                   <div class="avatar">
                     <div class="mask mask-squircle w-12 h-12">
-                      <img [src]="global.getPeerAvatar(global.getFingerprint(connection.value.publicKey))" [alt]="global.getPeerName(global.getFingerprint(connection.value.publicKey))">
+                      <img [src]="globalService.getPeerAvatar(globalService.getFingerprint(connection.value.publicKey))" [alt]="globalService.getPeerName(globalService.getFingerprint(connection.value.publicKey))">
                     </div>
                   </div>
                   <div>
-                    <div class="font-bold">{{ global.getPeerName(global.getFingerprint(connection.value.publicKey)) }}</div>
+                    <div class="font-bold">{{ globalService.getPeerName(globalService.getFingerprint(connection.value.publicKey)) }}</div>
                     <div class="text-sm opacity-50">{{ connection.key }}</div>
                   </div>
                 </div>
@@ -95,10 +95,10 @@
 </div>
 
 <!-- loading screen -->
-<app-loading [message]="'establishing...'" [hidden]="global.establishedStatus"></app-loading>
+<app-loading [message]="'establishing...'" [hidden]="globalService.establishedStatus"></app-loading>
 
 <!-- Info drawer -->
-@if (global.establishedStatus) {
+@if (globalService.establishedStatus) {
   <div class="drawer drawer-end">
     <input id="info-drawer" type="checkbox" class="drawer-toggle" />
     <div class="drawer-side">
@@ -106,7 +106,7 @@
       <div class="p-4 w-96 min-h-full bg-base-200">
         <h1 class="text-xl font-bold mb-5">To share files between devices</h1>
         <p class="text-lg">Scan the QR code:</p>
-        <qrcode [qrdata]="window.location.origin + '/' + global.peer.id"
+        <qrcode [qrdata]="window.location.origin + '/' + globalService.peer.id"
                 cssClass="flex justify-center p-5 bg-gray-50 rounded-lg"
                 [width]="512"
                 [errorCorrectionLevel]="'M'"
@@ -116,7 +116,7 @@
         <div class="divider">OR</div>
         <p class="text-lg">Share the provided address below:</p>
         <label class="input input-bordered flex items-center gap-2 pr-0">
-          <input type="text" class="grow" [value]="window.location.origin + '/' + global.peer.id" readonly #url />
+          <input type="text" class="grow" [value]="window.location.origin + '/' + globalService.peer.id" readonly #url />
           <!-- TODO: copy button animation -->
           <div class="tooltip tooltip-bottom" data-tip="copy" (click)="tooltip.setAttribute('data-tip', 'copied!')" (mouseleave)="tooltip.setAttribute('data-tip', 'copy')" #tooltip>
             <button class="btn btn-ghost btn-circle" (click)="navigator.clipboard.writeText(url.value)">
@@ -126,19 +126,19 @@
         </label>
         <div class="flex pt-5">
           <div class="flex-1">
-            <p class="text-sm text-base-content/70">Other people will see you as: <br><span class="text-base-content/90">{{ global.getPeerName() }}</span></p>
-            <p class="text-sm text-base-content/70">with the peer id: <br><span class="text-base-content/90">{{ global.peer.id }}</span></p>
+            <p class="text-sm text-base-content/70">Other people will see you as: <br><span class="text-base-content/90">{{ globalService.getPeerName() }}</span></p>
+            <p class="text-sm text-base-content/70">with the peer id: <br><span class="text-base-content/90">{{ globalService.peer.id }}</span></p>
           </div>
           <div class="flex-none">
             <div class="avatar">
               <div class="w-16 mask mask-squircle">
-                <img [src]="global.getPeerAvatar()" [alt]="global.getPeerName()">
+                <img [src]="globalService.getPeerAvatar()" [alt]="globalService.getPeerName()">
               </div>
             </div>
           </div>
         </div>
         <p class="text-base mt-5">This is your public key:</p>
-        <textarea class="textarea textarea-bordered w-full h-48 mt-1 [scrollbar-width:none] resize-none" readonly>{{ global.getPublicKeyAsPem() }}</textarea>
+        <textarea class="textarea textarea-bordered w-full h-48 mt-1 [scrollbar-width:none] resize-none" readonly>{{ globalService.getPublicKeyAsPem() }}</textarea>
         <p class="text-sm text-base-content/70">normally, you would not need to mind about this.</p>
       </div>
     </div>
