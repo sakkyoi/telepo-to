@@ -38,34 +38,29 @@
     </div>
   </div>
   <div class="flex-1 flex flex-col">
-    <button (click)="test()">test</button>
-    <!-- content goes here -->
-
-    <div class="overflow-x-auto h-full">
-      <table class="table">
-        <!-- head -->
-        <thead>
-        <tr>
-          <th>
-            <label>
-              <input type="checkbox" class="checkbox" />
-            </label>
-          </th>
-          <th>peer</th>
-          <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- row 1 -->
-        @for (connection of globalService.connections | keyvalue; track connection.key) {
-          @if (connection.value.status === 'connected') {
-            <tr>
-              <th>
-                <label>
-                  <input type="checkbox" class="checkbox" />
-                </label>
-              </th>
-              <td>
+    <div class="flex h-full">
+      <div class="flex-none h-full">
+        <ul class="menu menu-md h-full">
+          <li>
+            <div class="flex items-center gap-3">
+              <div class="relative grid justify-items-center">
+                <ng-icon [name]="'iconoirBrightCrown'" class="text-lg absolute -mt-3"></ng-icon>
+                <div class="avatar">
+                  <div class="mask mask-squircle w-12 h-12">
+                    <img [src]="globalService.getPeerAvatar()" [alt]="globalService.getPeerName()">
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="font-bold">{{ globalService.getPeerName() }} (You)</div>
+                <div class="text-sm opacity-50">{{ globalService.peer.id }}</div>
+              </div>
+            </div>
+          </li>
+          <li></li>
+          @for (connection of globalService.connections | keyvalue; track connection.key) {
+            @if (connection.value.status === 'connected') {
+              <li>
                 <div class="flex items-center gap-3">
                   <div class="avatar">
                     <div class="mask mask-squircle w-12 h-12">
@@ -77,19 +72,15 @@
                     <div class="text-sm opacity-50">{{ connection.key }}</div>
                   </div>
                 </div>
-              </td>
-              <th>
-                <button class="btn btn-ghost btn-xs">details</button>
-              </th>
-            </tr>
+              </li>
+            }
           }
-        }
-        </tbody>
-
-      </table>
+        </ul>
+      </div>
+      <div class="flex-1">
+        <button (click)="test()">test</button>
+      </div>
     </div>
-
-
     <router-outlet />
   </div>
 </div>

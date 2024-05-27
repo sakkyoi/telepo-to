@@ -2,7 +2,7 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, ViewChild, ViewContainerRef } from '
 import { RouterOutlet } from "@angular/router";
 import { QRCodeModule } from 'angularx-qrcode';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { iconoirQrCode, iconoirCopy } from '@ng-icons/iconoir';
+import { iconoirQrCode, iconoirCopy, iconoirBrightCrown } from '@ng-icons/iconoir';
 import { LoadingComponent } from "./loading/loading.component";
 import { ThemeSwitcherComponent } from "./theme-switcher/theme-switcher.component";
 import { ModalComponent } from "./modal/modal.component";
@@ -23,7 +23,7 @@ import { KeyValuePipe } from "@angular/common";
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  providers: [provideIcons({ iconoirQrCode, iconoirCopy })],
+  providers: [provideIcons({ iconoirQrCode, iconoirCopy, iconoirBrightCrown })],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],
