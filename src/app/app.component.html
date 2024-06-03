@@ -10,7 +10,7 @@
           <label class="flex items-center justify-center cursor-pointer space-x-1" for="info-drawer">
             <div class="avatar">
               <div class="w-5 mask mask-squircle">
-                <img [src]="globalService.getPeerAvatar()" alt="">
+                <img ngSrc="{{ globalService.getFingerprint() }}" alt="" fill>
               </div>
             </div>
             <span>{{ globalService.getPeerName() }}</span>
@@ -47,7 +47,7 @@
                 <ng-icon [name]="'iconoirBrightCrown'" class="text-lg absolute -mt-3"></ng-icon>
                 <div class="avatar">
                   <div class="mask mask-squircle w-12 h-12">
-                    <img [src]="globalService.getPeerAvatar()" [alt]="globalService.getPeerName()">
+                    <img ngSrc="{{ globalService.getFingerprint() }}" [alt]="globalService.getPeerName()" fill>
                   </div>
                 </div>
               </div>
@@ -64,7 +64,7 @@
                 <div class="flex items-center gap-3">
                   <div class="avatar">
                     <div class="mask mask-squircle w-12 h-12">
-                      <img [src]="globalService.getPeerAvatar(globalService.getFingerprint(connection.value.publicKey))" [alt]="globalService.getPeerName(globalService.getFingerprint(connection.value.publicKey))">
+                      <img ngSrc="{{ globalService.getFingerprint(connection.value.publicKey) }}" [alt]="globalService.getPeerName(globalService.getFingerprint(connection.value.publicKey))" fill>
                     </div>
                   </div>
                   <div>
@@ -123,7 +123,7 @@
           <div class="flex-none">
             <div class="avatar">
               <div class="w-16 mask mask-squircle">
-                <img [src]="globalService.getPeerAvatar()" [alt]="globalService.getPeerName()">
+                <img ngSrc="{{ globalService.getFingerprint() }}" [alt]="globalService.getPeerName()" fill>
               </div>
             </div>
           </div>

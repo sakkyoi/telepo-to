@@ -3,8 +3,6 @@ import { Router } from "@angular/router";
 import { DataConnection, Peer } from 'peerjs';
 import { pki } from 'node-forge';
 import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
-import { createAvatar } from '@dicebear/core';
-import { thumbs } from '@dicebear/collection';
 import { AlertComponent } from "./app/alert/alert.component";
 
 export enum ConnectionStatus {
@@ -222,16 +220,6 @@ export class GlobalService {
       separator: ' ',
       seed: fingerprint,
     });
-  }
-
-  getPeerAvatar(fingerprint: string | undefined = undefined, config = {}) {
-    if (!fingerprint) fingerprint = this.getFingerprint();
-    return createAvatar(thumbs, Object.assign(
-      {
-        seed: fingerprint,
-      },
-      config,
-    )).toDataUriSync();
   }
 
   getPublicKeyAsPem() {

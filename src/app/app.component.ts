@@ -2,12 +2,14 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, ViewChild, ViewContainerRef } from '
 import { RouterOutlet } from "@angular/router";
 import { QRCodeModule } from 'angularx-qrcode';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { iconoirQrCode, iconoirCopy, iconoirBrightCrown } from '@ng-icons/iconoir';
+import { iconoirBrightCrown, iconoirCopy, iconoirQrCode } from '@ng-icons/iconoir';
 import { LoadingComponent } from "./loading/loading.component";
 import { ThemeSwitcherComponent } from "./theme-switcher/theme-switcher.component";
 import { ModalComponent } from "./modal/modal.component";
 import { GlobalService } from "../global.service";
-import { KeyValuePipe } from "@angular/common";
+import { IMAGE_LOADER, ImageLoaderConfig, KeyValuePipe, NgOptimizedImage } from "@angular/common";
+import { createAvatar } from "@dicebear/core";
+import { thumbs } from "@dicebear/collection";
 
 @Component({
   selector: 'app-root',
@@ -20,10 +22,23 @@ import { KeyValuePipe } from "@angular/common";
     QRCodeModule,
     NgIconComponent,
     KeyValuePipe,
+    NgOptimizedImage,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  providers: [provideIcons({ iconoirQrCode, iconoirCopy, iconoirBrightCrown })],
+  providers: [
+    provideIcons({ iconoirQrCode, iconoirCopy, iconoirBrightCrown }),
+    {
+      provide: IMAGE_LOADER,
+      useValue: (config: ImageLoaderConfig) => {
+        return createAvatar(thumbs, Object.assign(
+          {
+            seed: config.src,
+          },
+          config,
+        )).toDataUriSync();
+      }
+    }],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],
