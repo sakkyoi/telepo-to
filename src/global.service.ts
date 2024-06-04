@@ -1,4 +1,4 @@
-import {Injectable, NgZone, ViewContainerRef} from '@angular/core';
+import { Injectable, NgZone, ViewContainerRef } from '@angular/core';
 import { Router } from "@angular/router";
 import { DataConnection, Peer } from 'peerjs';
 import { pki } from 'node-forge';

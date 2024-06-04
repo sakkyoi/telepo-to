@@ -77,8 +77,40 @@
           }
         </ul>
       </div>
-      <div class="flex-1 bg-base-200 mr-3 mb-3 rounded-3xl">
-        <button (click)="test()">test</button>
+      <div class="flex-1 bg-base-200 mr-3 mb-3 rounded-3xl relative">
+        <!--<button (click)="test()">test</button>-->
+
+        <div class="overflow-x-auto h-full w-full absolute">
+          <table class="table">
+            <!-- head -->
+            <thead>
+              <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Job</th>
+                <th>Favorite Color</th>
+              </tr>
+            </thead>
+            <tbody>
+             @for (i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track i) {
+              <tr>
+                <th>
+                  @if (i % 2 === 0) {
+                    <ng-icon [name]="'iconoirDataTransferDown'" class="text-red-500"></ng-icon>
+                  }
+                  @else {
+                    <ng-icon [name]="'iconoirDataTransferUp'" class="text-blue-500"></ng-icon>
+                  }
+                </th>
+                <td>Cy Ganderton</td>
+                <td>Quality Control Specialist</td>
+                <td>Blue</td>
+              </tr>
+             }
+            </tbody>
+          </table>
+        </div>
+
       </div>
     </div>
     <router-outlet />
