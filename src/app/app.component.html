@@ -75,6 +75,25 @@
               </li>
             }
           }
+
+          <li class="relative">
+            <div class="flex items-center gap-3 border-2 border-dashed border-gray-300">
+              <div class="avatar blur">
+                <div class="mask mask-squircle w-12 h-12">
+                  <img ngSrc="{{ globalService.getFingerprint() }}" [alt]="globalService.getPeerName(globalService.getFingerprint())" fill>
+                </div>
+              </div>
+              <div class="blur">
+                <div class="font-bold">{{ globalService.getPeerName(globalService.getFingerprint()) }}</div>
+                <div class="text-sm opacity-50">{{ globalService.peer.id }}</div>
+              </div>
+            </div>
+            <div class="flex flex-col gap-y-0 space-x-0 h-full w-full text-center justify-center absolute">
+              <div><ng-icon [name]="'iconoirCloudUpload'" class="text-xl"></ng-icon></div>
+              <div>Release to share</div>
+            </div>
+          </li>
+
         </ul>
       </div>
       <div class="flex-1 bg-base-200 mr-3 mb-3 rounded-3xl relative">
@@ -86,9 +105,11 @@
             <thead>
               <tr>
                 <th></th>
-                <th>Name</th>
-                <th>Job</th>
-                <th>Favorite Color</th>
+                <th>target</th>
+                <th>data</th>
+                <th>size</th>
+                <th>status</th>
+                <th>progress</th>
               </tr>
             </thead>
             <tbody>
@@ -96,15 +117,24 @@
               <tr>
                 <th>
                   @if (i % 2 === 0) {
-                    <ng-icon [name]="'iconoirDataTransferDown'" class="text-red-500"></ng-icon>
+                    <ng-icon [name]="'iconoirArrowDownLeft'" strokeWidth="5" class="text-green-500"></ng-icon>
                   }
                   @else {
-                    <ng-icon [name]="'iconoirDataTransferUp'" class="text-blue-500"></ng-icon>
+                    <ng-icon [name]="'iconoirArrowUpRight'" strokeWidth="5" class="text-red-500"></ng-icon>
                   }
                 </th>
-                <td>Cy Ganderton</td>
-                <td>Quality Control Specialist</td>
-                <td>Blue</td>
+                <td>(peer name and id)</td>
+                <td>(file or message or link)</td>
+                <td>(size or length)</td>
+                <td>
+                  @if (i % 2 === 0) {
+                    <ng-icon [name]="'iconoirDataTransferDown'" strokeWidth="3" class="text-green-500"></ng-icon>
+                  }
+                  @else {
+                    <ng-icon [name]="'iconoirDataTransferUp'" strokeWidth="3" class="text-red-500"></ng-icon>
+                  }
+                </td>
+                <td>(progress bar)</td>
               </tr>
              }
             </tbody>

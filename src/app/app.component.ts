@@ -2,7 +2,16 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, ViewChild, ViewContainerRef } from '
 import { RouterOutlet } from "@angular/router";
 import { QRCodeModule } from 'angularx-qrcode';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { iconoirBrightCrown, iconoirCopy, iconoirQrCode, iconoirDataTransferDown, iconoirDataTransferUp } from '@ng-icons/iconoir';
+import {
+  iconoirBrightCrown,
+  iconoirCopy,
+  iconoirQrCode,
+  iconoirDataTransferDown,
+  iconoirDataTransferUp,
+  iconoirArrowDownLeft,
+  iconoirArrowUpRight,
+  iconoirCloudUpload,
+} from '@ng-icons/iconoir';
 import { LoadingComponent } from "./loading/loading.component";
 import { ThemeSwitcherComponent } from "./theme-switcher/theme-switcher.component";
 import { ModalComponent } from "./modal/modal.component";
@@ -27,7 +36,16 @@ import { thumbs } from "@dicebear/collection";
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   providers: [
-    provideIcons({ iconoirQrCode, iconoirCopy, iconoirBrightCrown, iconoirDataTransferDown, iconoirDataTransferUp }),
+    provideIcons({
+      iconoirQrCode,
+      iconoirCopy,
+      iconoirBrightCrown,
+      iconoirDataTransferDown,
+      iconoirDataTransferUp,
+      iconoirArrowDownLeft,
+      iconoirArrowUpRight,
+      iconoirCloudUpload,
+    }),
     {
       provide: IMAGE_LOADER,
       useValue: (config: ImageLoaderConfig) => {
