@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ViewChild, ViewContainerRef, HostListener, Input } from '@angular/core';
 import { RouterOutlet } from "@angular/router";
 import { QRCodeModule } from 'angularx-qrcode';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
@@ -65,6 +65,31 @@ export class AppComponent {
   title = 'telepo-to';
 
   @ViewChild('welcomeModal') welcomeModal!: ModalComponent;
+  @Input() onDragOver: boolean = false;
+
+  @HostListener('dragover', ['$event'])
+  allowDrop(event: DragEvent) {
+    event.stopPropagation();
+    event.preventDefault();
+    this.onDragOver = true;
+    console.log('dragover');
+  }
+
+  @HostListener('dragleave', ['$event'])
+  disallowDrop(event: DragEvent) {
+    event.stopPropagation();
+    event.preventDefault();
+    this.onDragOver = false;
+    console.log('dragleave');
+  }
+
+  @HostListener('drop', ['$event'])
+  onDrop(event: DragEvent) {
+    event.stopPropagation();
+    event.preventDefault();
+    this.onDragOver = false;
+    console.log('drop');
+  }
 
   constructor(
     protected globalService: GlobalService,
